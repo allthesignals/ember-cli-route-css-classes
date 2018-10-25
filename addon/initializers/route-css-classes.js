@@ -3,16 +3,30 @@ import Ember from 'ember';
 
 export function initialize() {
   Ember.Route.reopen({
-    activate() {
-      this._super(...arguments);
+    activate(...args) {
+      this._super(...args);
 
-      this.getBodyElement().addClass(this.getRouteCssClass());
+      const el = this.getBodyElement();
+      const routeCssClass = this.getRouteCssClass();
+
+      if (el.classList) {
+        el.classList.add(routeCssClass);
+      } else {
+        el.className += ` ${routeCssClass}`;
+      }
     },
 
-    deactivate() {
-      this._super(...arguments);
+    deactivate(...args) {
+      this._super(...args);
 
-      this.getBodyElement().removeClass(this.getRouteCssClass());
+      const el = this.getBodyElement();
+      const className = this.getRouteCssClass();
+
+      if (el.classList) {
+        el.classList.remove(className);
+      } else {
+        el.className = el.className.replace(new RegExp(`(^|\\b)${className.split(' ').join('|')}(\\b|$)`, 'gi'), ' ');
+      }
     },
 
     getRouteCssClass() {
