@@ -20,7 +20,7 @@ export function initialize() {
     },
 
     getBodyElement() {
-      return Ember.$('body');
+      return document.querySelector('body');
     }
   });
 }
